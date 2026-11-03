@@ -54,6 +54,7 @@ html, body {
   padding: 36px 32px 28px;
   text-align: center;
 }
+.welcome-logo { display: block; width: clamp(110px, 26vw, 150px); height: auto; margin: 0 auto 6px; }
 .welcome-card h1 { font-size: clamp(2.2rem, 7vw, 3.4rem); margin: 0; color: var(--accent); }
 .subtitle { font-size: 1.3rem; margin: 0 0 8px; letter-spacing: 0.04em; }
 .tagline { margin: 0 0 22px; color: var(--muted); }
@@ -101,6 +102,8 @@ button:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 2px; 
   overflow-y: auto;
   padding-bottom: 16px;
 }
+.about-title { display: flex; align-items: center; gap: 14px; }
+.about-logo { width: 64px; height: auto; flex: none; }
 .about-card h2.shahmukhi { font-size: 1.8rem; color: var(--accent); margin: 0; text-align: left; }
 .about-card .subtitle { margin: 0; font-size: 1rem; color: var(--muted); }
 .about-body { padding: 4px 28px 8px; line-height: 1.6; }
@@ -224,3 +227,4 @@ button:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 2px; 
   .panel-header { padding: 12px 14px 6px; }
   .room-block { padding: 6px 14px 4px; }
 }
+@media (max-height: 640px) { .welcome-logo { width: 80px; } }
