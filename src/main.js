@@ -19,6 +19,7 @@ const WALL_MARGIN = 1.2;                             // keeps you off the shelve
 const ROOM_NAMES = {
   'Sufi Shrines': 'صوفی کلام',
   'Qissa Hall': 'قصے',
+  'Religious Verse': 'دینی کلام',
   'Lahore': 'لاہور',
   'Lahore (pre-1947)': 'پرانا لاہور',
   'Amritsar (pre-1947)': 'پرانا امرتسر',
@@ -267,6 +268,7 @@ function buildShelves() {
     { pos: new THREE.Vector3(-ROOM.width / 2 + 0.3, 0, 0), rot: Math.PI / 2 },
     { pos: new THREE.Vector3(ROOM.width / 2 - 0.3, 0, 0), rot: -Math.PI / 2 },
     { pos: new THREE.Vector3(-4.4, 0, ROOM.depth / 2 - 0.3), rot: Math.PI },
+    { pos: new THREE.Vector3(4.4, 0, ROOM.depth / 2 - 0.3), rot: Math.PI },
   ];
 
   [...rooms.entries()].forEach(([roomName, roomBooks], i) => {

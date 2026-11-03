@@ -53,5 +53,137 @@
     "year": "1940",
     "archiveId": "dohe-baba-farid-ji",
     "credit": "Compiled by Premi Prakashak, 1940"
+  },
+  {
+    "id": "PKK-006",
+    "titleShahmukhi": "احوال الآخرت",
+    "titleEnglish": "Ahwal-ul-Akhirat",
+    "author": "Hafiz Muhammad Lakhvi",
+    "authorShahmukhi": "حافظ محمد لکھوی",
+    "room": "Religious Verse",
+    "year": "1880",
+    "archiveId": "20240806_20240806_1754",
+    "credit": "Printed 1880"
+  },
+  {
+    "id": "PKK-007",
+    "titleShahmukhi": "احسن القصص",
+    "titleEnglish": "Ahsan-ul-Qasas (Yusuf Zulaikha)",
+    "author": "Ghulam Rasool Alampuri",
+    "authorShahmukhi": "غلام رسول عالمپوری",
+    "room": "Qissa Hall",
+    "year": "1918",
+    "archiveId": "ahsanulqisas_ma_citthi_1918",
+    "credit": "Lahore printing, 1918"
+  },
+  {
+    "id": "PKK-008",
+    "titleShahmukhi": "نصابِ ضروری",
+    "titleEnglish": "Nisab-e-Zaruri",
+    "author": "Khuda Bakhsh",
+    "authorShahmukhi": "خدا بخش",
+    "room": "Folk & Culture",
+    "year": "1869",
+    "archiveId": "nisab-zaruri",
+    "credit": "Printed 1869"
+  },
+  {
+    "id": "PKK-009",
+    "titleShahmukhi": "اصلی وڈی ہیر",
+    "titleEnglish": "Asli Wadi Heer",
+    "author": "Waris Shah",
+    "authorShahmukhi": "وارث شاہ",
+    "room": "Lahore (pre-1947)",
+    "year": "1920",
+    "archiveId": "asli-wadi-heer",
+    "credit": "Kapoor Art Printing Works, Lahore, 1920"
+  },
+  {
+    "id": "PKK-010",
+    "titleShahmukhi": "ہیر وارث شاہ",
+    "titleEnglish": "Heer Waris Shah (1865 edition)",
+    "author": "Waris Shah",
+    "authorShahmukhi": "وارث شاہ",
+    "room": "Qissa Hall",
+    "year": "1865",
+    "archiveId": "heer-waris-shah-punjabi-hq",
+    "credit": "1865 edition"
+  },
+  {
+    "id": "PKK-011",
+    "titleShahmukhi": "ہیر رانجھا مقبل",
+    "titleEnglish": "Heer Ranjha (Muqbil)",
+    "author": "Muqbil",
+    "authorShahmukhi": "مقبل",
+    "room": "Qissa Hall",
+    "year": "1921",
+    "archiveId": "dli.ministry.29545",
+    "credit": "Edited by Banarsi Das Jain, 1921 (Digital Library of India)"
+  },
+  {
+    "id": "PKK-012",
+    "titleShahmukhi": "کلیات میراں شاہ",
+    "titleEnglish": "Kulliyat-e-Miran Shah",
+    "author": "Miran Shah Jalandhari",
+    "authorShahmukhi": "میراں شاہ جالندھری",
+    "room": "Sufi Shrines",
+    "year": "1901",
+    "archiveId": "kuliyat-e-miran-shah",
+    "credit": "Lahore printing, 1901"
+  },
+  {
+    "id": "PKK-015",
+    "titleShahmukhi": "قصہ سپاہی زادہ با تصویر",
+    "titleEnglish": "Kissa Sipahi Zada (illustrated)",
+    "author": "Unknown",
+    "authorShahmukhi": "نامعلوم",
+    "room": "Qissa Hall",
+    "year": "1887",
+    "archiveId": "Kissa_Sipahi_Zada_Batasveer",
+    "credit": "Digitized by the Panjab Digital Library"
+  },
+  {
+    "id": "PKK-021",
+    "titleShahmukhi": "مرآۃ العرفان",
+    "titleEnglish": "Mir'at-ul-Irfan",
+    "author": "Pir Meher Ali Shah",
+    "authorShahmukhi": "پیر مہر علی شاہ",
+    "room": "Sufi Shrines",
+    "year": "2000",
+    "archiveId": "MiratUl-irfanPoetryOfPirMeherAliShahpunjabi",
+    "credit": "Digitized by Maktabah.org (CC BY-NC-ND 3.0)"
+  },
+  {
+    "id": "PKK-022",
+    "titleShahmukhi": "کلام حضرت بلھے شاہ",
+    "titleEnglish": "Kalam Hazrat Bulleh Shah",
+    "author": "Bulleh Shah",
+    "authorShahmukhi": "بلھے شاہ",
+    "room": "Sufi Shrines",
+    "year": "n.d.",
+    "archiveId": "KalamHazratBulhayShahpunjabi",
+    "credit": "Digitized by Maktabah.org (CC BY-NC-ND 3.0)"
+  },
+  {
+    "id": "PKK-024",
+    "titleShahmukhi": "انجیل مقدس مرقس دی معرفت (مغربی پنجابی)",
+    "titleEnglish": "Gospel of Mark in Western Punjabi (Jatki)",
+    "author": "Andrew Jukes",
+    "authorShahmukhi": "اینڈریو جکس",
+    "room": "Other",
+    "year": "1898",
+    "archiveId": "injil-i-muqaddas-marqus-di-marafat-m",
+    "credit": "Translated by Andrew Jukes, Panjab Bible Society, 1898"
+  },
+  {
+    "id": "PKK-025",
+    "titleShahmukhi": "انجیل (پنجابی)",
+    "titleEnglish": "New Testament in Punjabi (Persian script)",
+    "author": "British and Foreign Bible Society",
+    "authorShahmukhi": "برٹش اینڈ فارن بائبل سوسائٹی",
+    "room": "Other",
+    "year": "1913",
+    "archiveId": "newtestamentpers00brit",
+    "credit": "British and Foreign Bible Society, Lahore, 1913"
   }
 ]

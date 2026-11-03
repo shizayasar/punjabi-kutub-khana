@@ -567,7 +567,7 @@ export function buildDecor({ scene, ROOM, canvasTexture }) {
     neck.position.set(px, 0.39 * s, -0.4);
     corner.add(pot, neck);
   }
-  corner.position.set(ROOM.width / 2 - 1.2, 0, ROOM.depth / 2 - 1.6);
+  corner.position.set(ROOM.width / 2 - 1.2, 0, ROOM.depth / 2 - 2.6);
   corner.rotation.y = 0;
   scene.add(corner);
   bed.userData.caption = { en: 'A charpai, for reading in the shade', pnb: 'منجی' };
