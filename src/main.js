@@ -141,8 +141,13 @@ function buildRoom() {
 // ---------------------------------------------------------------------------
 // Book covers and shelves
 // ---------------------------------------------------------------------------
+// Covers are drawn at 384x540 (about 45% fewer pixels than before) using the original
+// 512x720 layout scaled down, so every cover uses less memory and builds faster.
+const COVER_SCALE = 0.75;
 function coverTexture(book, color) {
-  return canvasTexture(512, 720, (ctx, w, h) => {
+  return canvasTexture(512 * COVER_SCALE, 720 * COVER_SCALE, (ctx) => {
+    ctx.scale(COVER_SCALE, COVER_SCALE);
+    const w = 512, h = 720;
     ctx.fillStyle = color;
     ctx.fillRect(0, 0, w, h);
 
@@ -201,6 +206,56 @@ function signTexture(roomName) {
 }
 
 const bookMeshes = [];
+
+// Shared by every book, instead of new copies per book.
+const BOOK_W = 0.52, BOOK_H = 0.72, BOOK_D = 0.07;
+const bookGeometry = new THREE.BoxGeometry(BOOK_W, BOOK_H, BOOK_D);
+const pageMaterial = mat({ color: '#f1e4c8' });
+const colourMaterials = new Map();
+const colourMaterial = (color) => {
+  if (!colourMaterials.has(color)) colourMaterials.set(color, mat({ color }));
+  return colourMaterials.get(color);
+};
+
+// ---- Covers are built only when their shelf comes into view ----------------
+// Until then a book shows a plain cover in its own colour. Building happens a few
+// covers per frame so walking never stutters, and shelves you never look at cost nothing.
+const shelfUnits = [];
+const coverQueue = [];
+const COVERS_PER_FRAME = 3;
+const frustum = new THREE.Frustum();
+const viewMatrix = new THREE.Matrix4();
+const shelfSphere = new THREE.Sphere();
+
+function queueVisibleShelves() {
+  camera.updateMatrixWorld();
+  viewMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
+  frustum.setFromProjectionMatrix(viewMatrix);
+  for (const unit of shelfUnits) {
+    if (unit.userData.coversQueued) continue;
+    unit.getWorldPosition(shelfSphere.center);
+    shelfSphere.center.y = 1.5;
+    shelfSphere.radius = 2.6;
+    if (frustum.intersectsSphere(shelfSphere)) {
+      unit.userData.coversQueued = true;
+      coverQueue.push(...unit.userData.books);
+    }
+  }
+}
+
+// Returns true if any cover was built (so the frame needs redrawing).
+function buildQueuedCovers() {
+  let built = 0;
+  while (coverQueue.length && built < COVERS_PER_FRAME) {
+    const mesh = coverQueue.shift();
+    const { book, color } = mesh.userData;
+    const faces = mesh.material.slice();
+    faces[4] = mat({ map: coverTexture(book, color) }); // face 4 = front cover
+    mesh.material = faces;
+    built++;
+  }
+  return built > 0;
+}
 const hoverables = []; // windows and props that show a caption when you look at them
 
 // One shelf unit: 3 shelves, books displayed face-out.
@@ -234,19 +289,17 @@ function buildShelf(roomName, roomBooks, position, rotationY) {
 
   // Books: up to 5 per shelf, 3 shelves
   const perShelf = 5;
-  const bookW = 0.52, bookH = 0.72, bookD = 0.07;
+  const bookW = BOOK_W, bookH = BOOK_H;
+  unit.userData.books = [];
   roomBooks.slice(0, perShelf * 3).forEach((book, i) => {
     const shelfIndex = 2 - Math.floor(i / perShelf);      // fill top shelf first (eye level)
     const slot = i % perShelf;
     const color = COVER_COLORS[books.indexOf(book) % COVER_COLORS.length];
-    const sideMat = mat({ color, roughness: 0.6 });
-    const pageMat = mat({ color: '#f1e4c8', roughness: 0.9 });
-    const coverMat = mat({ map: coverTexture(book, color), roughness: 0.55 });
-    // Box faces: +x, -x, +y, -y, +z (front cover), -z
-    const mesh = new THREE.Mesh(
-      new THREE.BoxGeometry(bookW, bookH, bookD),
-      [sideMat, pageMat, pageMat, pageMat, coverMat, sideMat]
-    );
+    const side = colourMaterial(color);
+    // Box faces: +x, -x, +y, -y, +z (front cover), -z. The cover starts plain.
+    const mesh = new THREE.Mesh(bookGeometry, [side, pageMaterial, pageMaterial, pageMaterial, side, side]);
+    mesh.userData.color = color;
+    unit.userData.books.push(mesh);
     // Centre the books on each shelf, however many there are.
     const onThisShelf = Math.min(perShelf, roomBooks.length - Math.floor(i / perShelf) * perShelf);
     const x = (slot - (onThisShelf - 1) / 2) * (bookW + 0.28);
@@ -261,6 +314,7 @@ function buildShelf(roomName, roomBooks, position, rotationY) {
   unit.position.copy(position);
   unit.rotation.y = rotationY;
   scene.add(unit);
+  shelfUnits.push(unit);
 }
 
 function buildShelves() {
@@ -599,9 +653,14 @@ function adaptQuality(dt) {
   }
 }
 
+let frameCount = 0;
 function animate() {
   requestAnimationFrame(animate);
   const dt = Math.min(clock.getDelta(), 0.1);
+  if (!readerOpen) {
+    if (frameCount++ % 10 === 0) queueVisibleShelves();
+    if (buildQueuedCovers()) requestRender();
+  }
   if (controls.isLocked) {
     const forward = (keys.has('KeyW') || keys.has('ArrowUp') ? 1 : 0) - (keys.has('KeyS') || keys.has('ArrowDown') ? 1 : 0);
     const right = (keys.has('KeyD') || keys.has('ArrowRight') ? 1 : 0) - (keys.has('KeyA') || keys.has('ArrowLeft') ? 1 : 0);
@@ -651,4 +710,4 @@ async function start() {
 start();
 
 // Handy for testing in the browser console: window.pkk.camera.position.set(...)
-window.pkk = { requestRender,  camera, scene };
+window.pkk = { requestRender, camera, scene, renderer };
