@@ -27,25 +27,24 @@ Then open the link it prints (usually http://localhost:5173).
 
 ## Adding a book
 
-1. Add the book to the tracking spreadsheet first (rights checked, Shahmukhi edition, Internet Archive link).
-2. Add an entry to `src/books.json`:
+Books come from the tracking spreadsheet, `Punjabi Kutub Khana.xlsx`, which lives in the folder
+*above* this project.
 
-```json
-{
-  "id": "PKK-006",
-  "titleShahmukhi": "…",
-  "titleEnglish": "…",
-  "author": "…",
-  "authorShahmukhi": "…",
-  "room": "Sufi Shrines",
-  "year": "1930",
-  "archiveId": "the-part-after-archive.org/details/",
-  "credit": "Who scanned or edited it"
-}
+1. Add the book as a row on the spreadsheet's **Books** tab (and its author on the **Authors** tab).
+2. Save the spreadsheet, then run:
+
+```
+npm run sync
 ```
 
-`room` decides which shelf it goes on. A new room name gets its own shelf automatically.
-Add its Shahmukhi name to `ROOM_NAMES` in `src/main.js`.
+This rebuilds `src/books.json`. A row goes on the website only when **Script** is Shahmukhi,
+**Rights status** is Public domain or Permission granted, and **Source link** is an
+`archive.org/details/...` link. The script lists every row it skipped and why.
+
+If the spreadsheet is somewhere else: `npm run sync -- "/path/to/Punjabi Kutub Khana.xlsx"`
+
+`Room / theme` decides which shelf a book goes on. A new room gets its own shelf automatically;
+add its Shahmukhi name to `ROOM_NAMES` in `src/main.js` (the script reminds you).
 
 ## Project layout
 
@@ -53,6 +52,7 @@ Add its Shahmukhi name to `ROOM_NAMES` in `src/main.js`.
 - `src/main.js`: the 3D room, shelves, walking and clicking
 - `src/books.json`: the catalogue
 - `src/style.css`: colours, fonts and layout
+- `scripts/sync-books.mjs`: builds `src/books.json` from the spreadsheet
 
 ## License
 
