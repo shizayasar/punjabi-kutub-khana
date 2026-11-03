@@ -3,6 +3,7 @@
 // it in Internet Archive's reader inside an overlay.
 
 import * as THREE from 'three';
+import { mat } from './materials.js';
 import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
 import books from './books.json';
 import { buildDecor } from './decor.js';
@@ -37,8 +38,17 @@ const COVER_COLORS = ['#b5342b', '#1f6f6b', '#2f4b8f', '#7b2d5b', '#c4761b', '#3
 // Basic three.js setup
 // ---------------------------------------------------------------------------
 const canvas = document.getElementById('scene');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+// Performance notes: on high-density (Retina) screens the browser would draw 4x the pixels,
+// so we cap the resolution, skip antialiasing when the screen is already sharp, ask laptops
+// for their faster graphics chip, and drop to a lower resolution if frames come in slowly.
+const MAX_PIXEL_RATIO = 1.5;
+const renderer = new THREE.WebGLRenderer({
+  canvas,
+  antialias: window.devicePixelRatio < 1.5,
+  powerPreference: 'high-performance',
+});
+let pixelRatio = Math.min(window.devicePixelRatio, MAX_PIXEL_RATIO);
+renderer.setPixelRatio(pixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -64,7 +74,7 @@ function canvasTexture(w, h, draw) {
   draw(c.getContext('2d'), w, h);
   const tex = new THREE.CanvasTexture(c);
   tex.colorSpace = THREE.SRGBColorSpace;
-  tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  tex.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
   return tex;
 }
 
@@ -118,7 +128,7 @@ function buildRoom() {
 
   const floor = new THREE.Mesh(
     new THREE.PlaneGeometry(ROOM.width, ROOM.depth),
-    new THREE.MeshStandardMaterial({ map: floorTex, roughness: 0.8 })
+    mat({ map: floorTex, roughness: 0.8 })
   );
   floor.rotation.x = -Math.PI / 2;
   scene.add(floor);
@@ -196,7 +206,7 @@ const hoverables = []; // windows and props that show a caption when you look at
 // One shelf unit: 3 shelves, books displayed face-out.
 function buildShelf(roomName, roomBooks, position, rotationY) {
   const unit = new THREE.Group();
-  const wood = new THREE.MeshStandardMaterial({ color: '#6b3f22', roughness: 0.7 });
+  const wood = mat({ color: '#6b3f22', roughness: 0.7 });
   const W = 4.4, H = 2.9, D = 0.45;
 
   const back = new THREE.Mesh(new THREE.BoxGeometry(W, H, 0.05), wood);
@@ -229,9 +239,9 @@ function buildShelf(roomName, roomBooks, position, rotationY) {
     const shelfIndex = 2 - Math.floor(i / perShelf);      // fill top shelf first (eye level)
     const slot = i % perShelf;
     const color = COVER_COLORS[books.indexOf(book) % COVER_COLORS.length];
-    const sideMat = new THREE.MeshStandardMaterial({ color, roughness: 0.6 });
-    const pageMat = new THREE.MeshStandardMaterial({ color: '#f1e4c8', roughness: 0.9 });
-    const coverMat = new THREE.MeshStandardMaterial({ map: coverTexture(book, color), roughness: 0.55 });
+    const sideMat = mat({ color, roughness: 0.6 });
+    const pageMat = mat({ color: '#f1e4c8', roughness: 0.9 });
+    const coverMat = mat({ map: coverTexture(book, color), roughness: 0.55 });
     // Box faces: +x, -x, +y, -y, +z (front cover), -z
     const mesh = new THREE.Mesh(
       new THREE.BoxGeometry(bookW, bookH, bookD),
@@ -509,6 +519,8 @@ document.addEventListener('pointerlockerror', () => {
 });
 controls.addEventListener('unlock', () => {
   setWalkingHud(false);
+  if (hovered) { hovered.scale.setScalar(1); hovered = null; }
+  requestRender();
   if (!readerOpen) showPause();
 });
 
@@ -568,7 +580,27 @@ document.addEventListener('mousedown', () => {
 });
 
 const clock = new THREE.Clock();
+
+// Only draw when something can change. While a book, the list or a menu is open the room is
+// hidden or frozen behind it, so the graphics chip gets to rest instead of redrawing it 60x a second.
+let needsRender = true;
+const requestRender = () => { needsRender = true; };
+
+// If walking is slow (under ~45 frames a second), lower the resolution once.
+let slowFrames = 0, sampledFrames = 0;
+function adaptQuality(dt) {
+  if (pixelRatio <= 1 || sampledFrames > 240) return;
+  sampledFrames++;
+  if (dt > 1 / 45) slowFrames++;
+  if (sampledFrames === 240 && slowFrames > 120) {
+    pixelRatio = 1;
+    renderer.setPixelRatio(pixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+}
+
 function animate() {
+  requestAnimationFrame(animate);
   const dt = Math.min(clock.getDelta(), 0.1);
   if (controls.isLocked) {
     const forward = (keys.has('KeyW') || keys.has('ArrowUp') ? 1 : 0) - (keys.has('KeyS') || keys.has('ArrowDown') ? 1 : 0);
@@ -582,15 +614,19 @@ function animate() {
     p.z = THREE.MathUtils.clamp(p.z, -ROOM.depth / 2 + WALL_MARGIN, ROOM.depth / 2 - WALL_MARGIN);
     p.y = EYE_HEIGHT;
     updateHover();
+    adaptQuality(dt);
+    renderer.render(scene, camera);
+  } else if (needsRender && !readerOpen) {
+    renderer.render(scene, camera);
+    needsRender = false;
   }
-  renderer.render(scene, camera);
-  requestAnimationFrame(animate);
 }
 
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
+  requestRender();
 });
 
 // ---------------------------------------------------------------------------
@@ -609,9 +645,10 @@ async function start() {
   buildRoom();
   const rooms = buildShelves();
   buildListView(rooms);
+  requestRender();
   animate();
 }
 start();
 
 // Handy for testing in the browser console: window.pkk.camera.position.set(...)
-window.pkk = { camera, scene };
+window.pkk = { requestRender,  camera, scene };

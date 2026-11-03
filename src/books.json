@@ -143,6 +143,28 @@
     "credit": "Digitized by the Panjab Digital Library"
   },
   {
+    "id": "PKK-016",
+    "titleShahmukhi": "مرزا صاحباں",
+    "titleEnglish": "Mirza Sahiban",
+    "author": "Muhammad Boota Gujrati",
+    "authorShahmukhi": "محمد بوٹا گجراتی",
+    "room": "Qissa Hall",
+    "year": "1960",
+    "archiveId": "mirza-sahiban-mohammad-boota-gujrati",
+    "credit": "Azad Book Depot, Amritsar, 1960"
+  },
+  {
+    "id": "PKK-019",
+    "titleShahmukhi": "شرف دے گیت",
+    "titleEnglish": "Sharaf de Geet",
+    "author": "Feroz Din Sharaf",
+    "authorShahmukhi": "فیروز دین شرف",
+    "room": "Lahore (pre-1947)",
+    "year": "n.d.",
+    "archiveId": "20241109_20241109_1242",
+    "credit": "Printed in Lahore before 1947"
+  },
+  {
     "id": "PKK-021",
     "titleShahmukhi": "مرآۃ العرفان",
     "titleEnglish": "Mir'at-ul-Irfan",
@@ -185,5 +207,16 @@
     "year": "1913",
     "archiveId": "newtestamentpers00brit",
     "credit": "British and Foreign Bible Society, Lahore, 1913"
+  },
+  {
+    "id": "PKK-026",
+    "titleShahmukhi": "سیف الملوک",
+    "titleEnglish": "Saif-ul-Malook (Qissa Badi-ul-Jamal)",
+    "author": "Mian Muhammad Bakhsh",
+    "authorShahmukhi": "میاں محمد بخش",
+    "room": "Qissa Hall",
+    "year": "n.d.",
+    "archiveId": "32467_202207",
+    "credit": "Lithograph from the Punjab Public Library, Lahore"
   }
 ]

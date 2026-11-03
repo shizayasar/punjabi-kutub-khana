@@ -3,6 +3,7 @@
 // and jharoka windows that look out on scenes from Punjabi life.
 
 import * as THREE from 'three';
+import { mat } from './materials.js';
 
 const PALETTE = {
   red: '#c7362b',
@@ -326,7 +327,7 @@ export function buildDecor({ scene, ROOM, canvasTexture }) {
 
     const plaster = new THREE.Mesh(
       new THREE.PlaneGeometry(wall.w, ROOM.height),
-      new THREE.MeshStandardMaterial({ map: wallTexture(wall.w), roughness: 0.95 })
+      mat({ map: wallTexture(wall.w), roughness: 0.95 })
     );
     plaster.position.y = ROOM.height / 2;
     group.add(plaster);
@@ -336,7 +337,7 @@ export function buildDecor({ scene, ROOM, canvasTexture }) {
     dTex.repeat.set(wall.w / 2, 1);
     const dado = new THREE.Mesh(
       new THREE.PlaneGeometry(wall.w, DADO_H),
-      new THREE.MeshStandardMaterial({ map: dTex, roughness: 0.6 })
+      mat({ map: dTex, roughness: 0.6 })
     );
     dado.position.set(0, DADO_H / 2, 0.01);
     group.add(dado);
@@ -346,7 +347,7 @@ export function buildDecor({ scene, ROOM, canvasTexture }) {
     bTex.repeat.set(wall.w / 2.5, 1);
     const band = new THREE.Mesh(
       new THREE.PlaneGeometry(wall.w, BAND_H),
-      new THREE.MeshStandardMaterial({ map: bTex, roughness: 0.5 })
+      mat({ map: bTex, roughness: 0.5 })
     );
     band.position.set(0, ROOM.height - 0.45, 0.01);
     group.add(band);
@@ -377,7 +378,7 @@ export function buildDecor({ scene, ROOM, canvasTexture }) {
   ceilTex.repeat.set(ROOM.width / 5, ROOM.depth / 5);
   const ceiling = new THREE.Mesh(
     new THREE.PlaneGeometry(ROOM.width, ROOM.depth),
-    new THREE.MeshStandardMaterial({ map: ceilTex, roughness: 0.8 })
+    mat({ map: ceilTex, roughness: 0.8 })
   );
   ceiling.rotation.x = Math.PI / 2;
   ceiling.position.y = ROOM.height;
@@ -403,7 +404,7 @@ export function buildDecor({ scene, ROOM, canvasTexture }) {
 
   const rug = new THREE.Mesh(
     new THREE.PlaneGeometry(4.2, 6),
-    new THREE.MeshStandardMaterial({ map: phulkari(512, 768), roughness: 1 })
+    mat({ map: phulkari(512, 768), roughness: 1 })
   );
   rug.rotation.x = -Math.PI / 2;
   rug.position.set(0, 0.01, 0);
@@ -411,14 +412,14 @@ export function buildDecor({ scene, ROOM, canvasTexture }) {
 
   const hanging = new THREE.Mesh(
     new THREE.PlaneGeometry(2.6, 1.9),
-    new THREE.MeshStandardMaterial({ map: phulkari(640, 480), roughness: 1, side: THREE.DoubleSide })
+    mat({ map: phulkari(640, 480), roughness: 1, side: THREE.DoubleSide })
   );
   hanging.position.set(0, 2.3, ROOM.depth / 2 - 0.03);
   hanging.rotation.y = Math.PI;
   scene.add(hanging);
   const rod = new THREE.Mesh(
     new THREE.CylinderGeometry(0.03, 0.03, 2.9, 8),
-    new THREE.MeshStandardMaterial({ color: PALETTE.gold, metalness: 0.6, roughness: 0.4 })
+    mat({ color: PALETTE.gold, metalness: 0.6, roughness: 0.4 })
   );
   rod.rotation.z = Math.PI / 2;
   rod.position.set(0, 3.27, ROOM.depth / 2 - 0.06);
@@ -442,7 +443,7 @@ export function buildDecor({ scene, ROOM, canvasTexture }) {
     uv.setXY(i, (pos.getX(i) + AW) / (AW * 2), pos.getY(i) / (AH + AW));
   }
 
-  const frameMat = new THREE.MeshStandardMaterial({ color: PALETTE.wood, roughness: 0.6 });
+  const frameMat = mat({ color: PALETTE.wood, roughness: 0.6 });
   const glassColours = [PALETTE.red, PALETTE.teal, PALETTE.gold, PALETTE.blue];
   const windowSpots = [
     { x: -ROOM.width / 2, z: -4.3, rot: Math.PI / 2 },
@@ -476,7 +477,7 @@ export function buildDecor({ scene, ROOM, canvasTexture }) {
     hoverables.push(view);
 
     // window bars (jaali-style) for depth
-    const barMat = new THREE.MeshStandardMaterial({ color: '#3b2416' });
+    const barMat = mat({ color: '#3b2416' });
     const bar = new THREE.Mesh(new THREE.BoxGeometry(0.035, AH + AW * 0.95, 0.03), barMat);
     bar.position.set(0, (AH + AW) / 2, 0.03);
     group.add(bar);
@@ -490,9 +491,8 @@ export function buildDecor({ scene, ROOM, canvasTexture }) {
     group.add(sill);
 
     // soft coloured light spilling in from outside
-    const spill = new THREE.PointLight(sceneDef.glow, 2.2, 4.5, 2);
-    spill.position.set(0, 1.2, 0.8);
-    group.add(spill);
+    // (The coloured light spilling in used to be four extra lamps. Each lamp makes every pixel
+    // in the room cost more to draw, so the window scenes now just glow on their own.)
 
     scene.add(group);
   });
@@ -517,7 +517,7 @@ export function buildDecor({ scene, ROOM, canvasTexture }) {
     scene.add(glass);
     const cap = new THREE.Mesh(
       new THREE.ConeGeometry(0.14, 0.14, 8),
-      new THREE.MeshStandardMaterial({ color: PALETTE.gold, metalness: 0.7, roughness: 0.3 })
+      mat({ color: PALETTE.gold, metalness: 0.7, roughness: 0.3 })
     );
     cap.position.set(x, y + 0.33, z);
     scene.add(cap);
@@ -531,7 +531,7 @@ export function buildDecor({ scene, ROOM, canvasTexture }) {
 
   // ---- A reading corner: charpai and clay pots -----------------------------
   const corner = new THREE.Group();
-  const legMat = new THREE.MeshStandardMaterial({ color: PALETTE.wood, roughness: 0.6 });
+  const legMat = mat({ color: PALETTE.wood, roughness: 0.6 });
   const weave = canvasTexture(256, 256, (ctx, w, h) => {
     ctx.fillStyle = '#e8c98f';
     ctx.fillRect(0, 0, w, h);
@@ -544,7 +544,7 @@ export function buildDecor({ scene, ROOM, canvasTexture }) {
       ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i - h, h); ctx.stroke();
     }
   });
-  const bed = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.06, 1.9), new THREE.MeshStandardMaterial({ map: weave }));
+  const bed = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.06, 1.9), mat({ map: weave }));
   bed.position.y = 0.45;
   corner.add(bed);
   for (const [lx, lz] of [[-0.45, -0.9], [0.45, -0.9], [-0.45, 0.9], [0.45, 0.9]]) {
@@ -554,11 +554,11 @@ export function buildDecor({ scene, ROOM, canvasTexture }) {
   }
   const pillow = new THREE.Mesh(
     new THREE.BoxGeometry(0.7, 0.12, 0.35),
-    new THREE.MeshStandardMaterial({ map: phulkari(256, 128) })
+    mat({ map: phulkari(256, 128) })
   );
   pillow.position.set(0, 0.54, -0.7);
   corner.add(pillow);
-  const potMat = new THREE.MeshStandardMaterial({ color: '#b4523a', roughness: 0.9 });
+  const potMat = mat({ color: '#b4523a', roughness: 0.9 });
   for (const [px, s] of [[0.9, 1], [1.25, 0.75]]) {
     const pot = new THREE.Mesh(new THREE.SphereGeometry(0.22 * s, 20, 14), potMat);
     pot.scale.y = 0.9;
