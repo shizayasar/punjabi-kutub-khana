@@ -168,9 +168,15 @@ function coverTexture(book, color) {
     ctx.fillStyle = '#fff6e6';
     ctx.textAlign = 'center';
     ctx.direction = 'rtl';
-    ctx.font = `700 64px ${NASTALIQ}`;
-    const lines = wrapLines(ctx, book.titleShahmukhi, w - 120);
-    const lineH = 120;
+    // Long titles get a smaller font so they never run into the author's name.
+    let size = 64, lines;
+    for (;;) {
+      ctx.font = `700 ${size}px ${NASTALIQ}`;
+      lines = wrapLines(ctx, book.titleShahmukhi, w - 120);
+      if (lines.length <= 2 || size <= 40) break;
+      size -= 8;
+    }
+    const lineH = size * 1.85;
     const startY = 290 - ((lines.length - 1) * lineH) / 2;
     lines.forEach((line, i) => ctx.fillText(line, w / 2, startY + i * lineH));
 
@@ -180,7 +186,12 @@ function coverTexture(book, color) {
 
     // English title
     ctx.direction = 'ltr';
-    ctx.font = `400 26px ${SERIF}`;
+    let enSize = 26;
+    ctx.font = `400 ${enSize}px ${SERIF}`;
+    while (ctx.measureText(book.titleEnglish).width > w - 110 && enSize > 15) {
+      enSize -= 1;
+      ctx.font = `400 ${enSize}px ${SERIF}`;
+    }
     ctx.fillStyle = 'rgba(255,246,230,0.85)';
     ctx.fillText(book.titleEnglish, w / 2, 640);
   });
@@ -326,15 +337,21 @@ function buildShelves() {
   }
 
   // Shelf spots around the walls. More rooms → more spots used.
+  // 7 spots: three on the back wall, one on each side wall, two on the front wall
+  // (the front wall's centre is kept for the phulkari hanging).
   const spots = [
-    { pos: new THREE.Vector3(-3, 0, -ROOM.depth / 2 + 0.3), rot: 0 },
-    { pos: new THREE.Vector3(3, 0, -ROOM.depth / 2 + 0.3), rot: 0 },
+    { pos: new THREE.Vector3(-4.6, 0, -ROOM.depth / 2 + 0.3), rot: 0 },
+    { pos: new THREE.Vector3(0, 0, -ROOM.depth / 2 + 0.3), rot: 0 },
+    { pos: new THREE.Vector3(4.6, 0, -ROOM.depth / 2 + 0.3), rot: 0 },
     { pos: new THREE.Vector3(-ROOM.width / 2 + 0.3, 0, 0), rot: Math.PI / 2 },
     { pos: new THREE.Vector3(ROOM.width / 2 - 0.3, 0, 0), rot: -Math.PI / 2 },
     { pos: new THREE.Vector3(-4.4, 0, ROOM.depth / 2 - 0.3), rot: Math.PI },
     { pos: new THREE.Vector3(4.4, 0, ROOM.depth / 2 - 0.3), rot: Math.PI },
   ];
 
+  if (rooms.size > spots.length) {
+    console.warn(`${rooms.size} rooms but only ${spots.length} shelf spots: some shelves will overlap.`);
+  }
   [...rooms.entries()].forEach(([roomName, roomBooks], i) => {
     const spot = spots[i % spots.length];
     buildShelf(roomName, roomBooks, spot.pos, spot.rot);

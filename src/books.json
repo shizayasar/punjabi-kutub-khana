@@ -218,5 +218,115 @@
     "year": "n.d.",
     "archiveId": "32467_202207",
     "credit": "Lithograph from the Punjab Public Library, Lahore"
+  },
+  {
+    "id": "PKK-027",
+    "titleShahmukhi": "دینیات",
+    "titleEnglish": "Deneyat (Diniyat)",
+    "author": "Unknown",
+    "authorShahmukhi": "نامعلوم",
+    "room": "Religious Verse",
+    "year": "n.d.",
+    "archiveId": "Deneyat",
+    "credit": "Manuscript digitized by the Panjab Digital Library"
+  },
+  {
+    "id": "PKK-028",
+    "titleShahmukhi": "گیان منجری",
+    "titleEnglish": "Gyan Manjari",
+    "author": "Unknown",
+    "authorShahmukhi": "نامعلوم",
+    "room": "Religious Verse",
+    "year": "n.d.",
+    "archiveId": "Gyan_Manjari",
+    "credit": "Manuscript digitized by the Panjab Digital Library"
+  },
+  {
+    "id": "PKK-029",
+    "titleShahmukhi": "زیویں سدھراں دی",
+    "titleEnglish": "Zivain Sadhraan Di",
+    "author": "Zafar Awan",
+    "authorShahmukhi": "ظفر اعوان",
+    "room": "Modern (post-1947)",
+    "year": "2017",
+    "archiveId": "zivain-sadraan-di",
+    "credit": "© Zafar Awan, shared by the poet (CC BY-ND 4.0)"
+  },
+  {
+    "id": "PKK-030",
+    "titleShahmukhi": "عمراں دے کھوہ",
+    "titleEnglish": "Umraan De Khoh",
+    "author": "Zafar Awan",
+    "authorShahmukhi": "ظفر اعوان",
+    "room": "Modern (post-1947)",
+    "year": "2019",
+    "archiveId": "umraan-de-khu",
+    "credit": "© Zafar Awan, shared by the poet (CC BY-ND 4.0)"
+  },
+  {
+    "id": "PKK-031",
+    "titleShahmukhi": "کندھاں اُتے گھاء",
+    "titleEnglish": "Kandhaan Utte Ghaa",
+    "author": "Zafar Awan",
+    "authorShahmukhi": "ظفر اعوان",
+    "room": "Modern (post-1947)",
+    "year": "2019",
+    "archiveId": "kandhaan-uttay-ghaa",
+    "credit": "© Zafar Awan, shared by the poet (CC BY-ND 4.0)"
+  },
+  {
+    "id": "PKK-032",
+    "titleShahmukhi": "واشنا",
+    "titleEnglish": "Washna",
+    "author": "Zafar Awan",
+    "authorShahmukhi": "ظفر اعوان",
+    "room": "Modern (post-1947)",
+    "year": "2022",
+    "archiveId": "washna",
+    "credit": "© Zafar Awan, shared by the poet (CC BY-ND 4.0)"
+  },
+  {
+    "id": "PKK-033",
+    "titleShahmukhi": "للکار",
+    "titleEnglish": "Lalkar",
+    "author": "Zafar Awan",
+    "authorShahmukhi": "ظفر اعوان",
+    "room": "Modern (post-1947)",
+    "year": "2024",
+    "archiveId": "lalkar_by_Zafar_Awan",
+    "credit": "© Zafar Awan, shared by the poet (CC BY-ND 4.0)"
+  },
+  {
+    "id": "PKK-034",
+    "titleShahmukhi": "پہلی پیڑ",
+    "titleEnglish": "Pehli Peerh",
+    "author": "Zafar Awan",
+    "authorShahmukhi": "ظفر اعوان",
+    "room": "Modern (post-1947)",
+    "year": "2025",
+    "archiveId": "pehli-peid",
+    "credit": "© Zafar Awan, shared by the poet (CC BY-ND 4.0)"
+  },
+  {
+    "id": "PKK-035",
+    "titleShahmukhi": "سی حرفی: تحقیق الحقائق فی تحقیق توحید",
+    "titleEnglish": "Si Harfi: Tahqiq al-Haqaiq fi Tahqiq al-Tawhid (Part I)",
+    "author": "Syed Abdul Qadir Gillani",
+    "authorShahmukhi": "سید عبد القادر گیلانی",
+    "room": "Sufi Shrines",
+    "year": "1955",
+    "archiveId": "abu-al-irfan-syed-abdul-qadir-gillani_202609",
+    "credit": "Shared by the poet's family, Chak 522-GB Sharif (CC BY-NC-ND 4.0)"
+  },
+  {
+    "id": "PKK-036",
+    "titleShahmukhi": "تجلیاتِ توحید",
+    "titleEnglish": "Tajalliyat-e-Tawhid",
+    "author": "Syed Abdul Qadir Gillani",
+    "authorShahmukhi": "سید عبد القادر گیلانی",
+    "room": "Sufi Shrines",
+    "year": "1955",
+    "archiveId": "abu-al-irfan-abdul-qadir-gillani",
+    "credit": "Shared by the poet's family, Chak 522-GB Sharif (CC BY-NC-ND 4.0)"
   }
 ]
