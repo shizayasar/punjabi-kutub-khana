@@ -1,6 +1,10 @@
 # Punjabi Kutub Khana · پنجابی کتب خانہ
 
-A walkable digital library of Punjabi literature in Shahmukhi. Every book is free to read.
+A walkable digital library of Punjabi literature in Shahmukhi. Every book is free to read at
+[punjabikutubkhana.org](https://punjabikutubkhana.org).
+
+> **© 2026 Shiza Yasar. All rights reserved.** This code is shared here for viewing only.
+> You may not copy, modify, reuse or deploy it without written permission. See [LICENSE](LICENSE).
 
 Built with [Three.js](https://threejs.org) and [Vite](https://vitejs.dev). Books are hosted on
 [Internet Archive](https://archive.org) and open in its reader.
@@ -52,4 +56,8 @@ Add its Shahmukhi name to `ROOM_NAMES` in `src/main.js`.
 
 ## License
 
-Code: MIT. Each book keeps its own rights status; see the credit shown in the reader.
+© 2026 Shiza Yasar. All rights reserved. The code and design of this website may not be copied,
+modified, redistributed or used to run another website without written permission. See [LICENSE](LICENSE).
+
+The books shown in the library are not covered by this notice. Each keeps its own rights status;
+see the credit shown in the reader.

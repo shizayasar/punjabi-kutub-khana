@@ -1,0 +1,17 @@
+Copyright (c) 2026 Shiza Yasar. All rights reserved.
+
+This repository contains the source code, design and assets of the Punjabi Kutub Khana
+website (punjabikutubkhana.org).
+
+No license is granted to use this work. You may view the source code on GitHub, as allowed
+by GitHub's Terms of Service. You may not copy, modify, merge, publish, distribute,
+sublicense, sell, or deploy this code or design, in whole or in part, or use it to create
+another website or application, without prior written permission from Shiza Yasar.
+
+To ask for permission, contact: contact@punjabikutubkhana.org
+
+Exceptions:
+- Books and scans shown in the library belong to their respective rights holders or are in
+  the public domain. They are not covered by this notice.
+- Third-party software and fonts used by this project (such as three.js, Vite, and the Noto
+  Nastaliq Urdu and Fraunces fonts) remain under their own licenses.

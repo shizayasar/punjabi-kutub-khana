@@ -4,7 +4,8 @@
   "version": "0.1.0",
   "type": "module",
   "description": "Punjabi Kutub Khana — a walkable digital library of Punjabi literature in Shahmukhi.",
-  "license": "MIT",
+  "license": "UNLICENSED",
+  "author": "Shiza Yasar",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

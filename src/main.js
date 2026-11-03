@@ -449,6 +449,23 @@ function openList() {
   if (!isTouch) $('search').focus(); // phones: don't pop the keyboard up uninvited
 }
 
+// ---------------------------------------------------------------------------
+// About page: opens over whatever screen you were on and returns you there.
+// ---------------------------------------------------------------------------
+const about = $('about');
+let aboutReturn = null;
+function openAbout(e) {
+  e?.stopPropagation();
+  aboutReturn = [welcome, pause, listView].find((el) => !el.hidden) ?? welcome;
+  aboutReturn.hidden = true;
+  about.hidden = false;
+}
+function closeAbout() {
+  about.hidden = true;
+  (aboutReturn ?? welcome).hidden = false;
+}
+document.querySelectorAll('[data-about]').forEach((btn) => btn.addEventListener('click', openAbout));
+
 $('enter-btn').addEventListener('click', () => controls.lock());
 $('list-btn').addEventListener('click', openList);
 $('pause-list-btn').addEventListener('click', (e) => {
@@ -461,7 +478,8 @@ pause.addEventListener('click', () => controls.lock());
 document.querySelectorAll('[data-close]').forEach((btn) => {
   btn.addEventListener('click', () => {
     const target = btn.dataset.close;
-    if (target === 'reader') closeReader({ fromClick: true });
+    if (target === 'about') closeAbout();
+    else if (target === 'reader') closeReader({ fromClick: true });
     else if (isTouch) {
       // Phones can't walk, so closing the list just reopens it.
       listView.hidden = false;
@@ -474,6 +492,7 @@ document.querySelectorAll('[data-close]').forEach((btn) => {
 });
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && readerOpen) closeReader();
+  else if (e.key === 'Escape' && !about.hidden) closeAbout();
 });
 
 controls.addEventListener('lock', () => {

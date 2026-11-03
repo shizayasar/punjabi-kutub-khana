@@ -32,6 +32,7 @@
           <button id="list-btn">Browse the shelves</button>
         </div>
         <p class="small">Walking works best on a computer. On a phone, browse the shelves.</p>
+        <p class="small"><button class="link-btn" data-about>About the library</button></p>
       </div>
     </section>
 
@@ -39,7 +40,10 @@
     <section id="pause" class="overlay" hidden>
       <div class="card pause-card">
         <p class="pause-title">Click anywhere to keep walking</p>
-        <button id="pause-list-btn">Browse the shelves</button>
+        <div class="buttons">
+          <button id="pause-list-btn">Browse the shelves</button>
+          <button data-about>About</button>
+        </div>
       </div>
     </section>
 
@@ -47,7 +51,10 @@
     <section id="list-view" class="overlay" hidden>
       <div class="card list-card">
         <header class="panel-header">
-          <h2>The shelves</h2>
+          <div>
+            <h2>The shelves</h2>
+            <button class="link-btn" data-about>About the library</button>
+          </div>
           <button class="close" data-close="list-view" aria-label="Close">×</button>
         </header>
         <div class="search-wrap">
@@ -63,6 +70,66 @@
         </div>
         <div id="list-rooms"></div>
         <p id="no-results" hidden>No books match that search yet. Try a poet's name, like <em>Bulleh Shah</em> or <span class="shahmukhi" lang="pnb" dir="rtl">وارث شاہ</span>.</p>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="overlay" hidden>
+      <div class="card about-card">
+        <header class="panel-header">
+          <div>
+            <h2 class="shahmukhi" lang="pnb" dir="rtl">ساڈے بارے</h2>
+            <p class="subtitle">About Punjabi Kutub Khana</p>
+          </div>
+          <button class="close" data-close="about" aria-label="Close">×</button>
+        </header>
+        <div class="about-body">
+          <p class="lead">
+            <span class="shahmukhi" lang="pnb" dir="rtl">پنجابی کتب خانہ</span>
+            Punjabi Kutub Khana is a free digital library of Punjabi literature written in
+            <strong>Shahmukhi</strong>. Walk through its halls, pick a book off the shelf, and read it in your browser.
+          </p>
+
+          <h3>Why it exists</h3>
+          <p>
+            Generations of Punjabi poetry, qisse and scholarship were printed in Shahmukhi, from the Sufi poets to the
+            lithograph presses of old Lahore and Amritsar. Many of those books now survive in only a few libraries, or on
+            crumbling paper in family collections. This library gathers them in one place, so anyone in Punjab or anywhere
+            in the world can read them, for free.
+          </p>
+
+          <h3>How books are chosen</h3>
+          <ul>
+            <li>Every book is in Shahmukhi script.</li>
+            <li>Books are added only if they are in the public domain (in Pakistan, 50 years after the writer’s death),
+              or shared with the permission of the writer, their family, or an open licence.</li>
+            <li>Each book shows where its scan came from and who edited or digitized it.</li>
+            <li>Scans are hosted on <a href="https://archive.org" target="_blank" rel="noopener">Internet Archive</a>.</li>
+          </ul>
+
+          <h3>With thanks</h3>
+          <p>
+            To the <a href="https://www.panjabdigilib.org" target="_blank" rel="noopener">Panjab Digital Library</a>,
+            <a href="https://maktabah.org" target="_blank" rel="noopener">Maktabah.org</a>,
+            <a href="https://archive.org" target="_blank" rel="noopener">Internet Archive</a>, and the scholars and
+            volunteers whose editions and scans make this library possible, including Dr. Faqir Muhammad Faqir.
+          </p>
+
+          <h3>Get in touch</h3>
+          <p>
+            Want to suggest a book, share a scan from your family’s collection, or report a problem with a book?
+            Email <a href="mailto:contact@punjabikutubkhana.org">contact@punjabikutubkhana.org</a>.
+            If you hold the rights to a book here and want it removed, write to us and it will be taken down promptly.
+          </p>
+
+          <h3>Who made it</h3>
+          <p>
+            Punjabi Kutub Khana was designed and built by
+            <a href="https://shizayasar.com" target="_blank" rel="noopener">Shiza Yasar</a>.
+            The books are free to read; the website itself, its code and design are
+            © 2026 Shiza Yasar. All rights reserved.
+          </p>
+        </div>
       </div>
     </section>
 
