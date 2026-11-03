@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Punjabi Kutub Khana | پنجابی کتب خانہ</title>
+    <meta name="description" content="A walkable digital library of Punjabi literature in Shahmukhi. Free to read." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <canvas id="scene"></canvas>
+
+    <!-- Crosshair + hover label (shown while walking) -->
+    <div id="crosshair" hidden></div>
+    <div id="hover-label" hidden></div>
+    <div id="hint" hidden>WASD to walk · mouse to look · click a book to read · Esc to pause</div>
+
+    <!-- Welcome screen -->
+    <section id="welcome" class="overlay">
+      <div class="card welcome-card">
+        <h1 class="shahmukhi" lang="pnb" dir="rtl">پنجابی کتب خانہ</h1>
+        <p class="subtitle">Punjabi Kutub Khana</p>
+        <p class="tagline">A digital library of Punjabi literature in Shahmukhi. Every book is free to read.</p>
+        <div class="buttons">
+          <button id="enter-btn" class="primary">Walk into the library</button>
+          <button id="list-btn">Browse the shelves</button>
+        </div>
+        <p class="small">Walking works best on a computer. On a phone, browse the shelves.</p>
+      </div>
+    </section>
+
+    <!-- Pause screen (after Esc or closing a book while walking) -->
+    <section id="pause" class="overlay" hidden>
+      <div class="card pause-card">
+        <p class="pause-title">Click anywhere to keep walking</p>
+        <button id="pause-list-btn">Browse the shelves</button>
+      </div>
+    </section>
+
+    <!-- List view (also the phone-friendly way in) -->
+    <section id="list-view" class="overlay" hidden>
+      <div class="card list-card">
+        <header class="panel-header">
+          <h2>The shelves</h2>
+          <button class="close" data-close="list-view" aria-label="Close">×</button>
+        </header>
+        <div class="search-wrap">
+          <label for="search" class="visually-hidden">Search the library</label>
+          <input
+            id="search"
+            type="search"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="Search by title or poet · لبھو"
+          />
+          <p id="search-count" aria-live="polite"></p>
+        </div>
+        <div id="list-rooms"></div>
+        <p id="no-results" hidden>No books match that search yet. Try a poet's name, like <em>Bulleh Shah</em> or <span class="shahmukhi" lang="pnb" dir="rtl">وارث شاہ</span>.</p>
+      </div>
+    </section>
+
+    <!-- Book reader -->
+    <section id="reader" class="overlay" hidden>
+      <div class="card reader-card">
+        <header class="panel-header">
+          <div>
+            <h2 id="reader-title-sm" class="shahmukhi" lang="pnb" dir="rtl"></h2>
+            <p id="reader-meta"></p>
+          </div>
+          <button class="close" data-close="reader" aria-label="Close">×</button>
+        </header>
+        <div class="reader-body">
+          <iframe id="reader-frame" title="Book reader" allow="fullscreen" allowfullscreen></iframe>
+          <div id="reader-loading" aria-live="polite">
+            <svg class="loader-star" viewBox="0 0 100 100" aria-hidden="true">
+              <polygon points="50,4 61,39 96,50 61,61 50,96 39,61 4,50 39,39" />
+              <polygon class="inner" points="50,22 57,43 78,50 57,57 50,78 43,57 22,50 43,43" />
+            </svg>
+            <p class="shahmukhi" lang="pnb" dir="rtl">کتاب کھل رہی اے</p>
+            <p class="en">Opening the book…</p>
+          </div>
+        </div>
+        <footer id="reader-footer"></footer>
+      </div>
+    </section>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
