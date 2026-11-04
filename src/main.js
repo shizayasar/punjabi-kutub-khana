@@ -5,6 +5,12 @@
 import * as THREE from 'three';
 import { mat } from './materials.js';
 import { createReader } from './reader.js';
+import { inject as injectAnalytics } from '@vercel/analytics';
+
+// Vercel Web Analytics: counts visits and where visitors come from. No cookies,
+// no personal data. It only records anything on the live site, once Analytics is
+// switched on in the Vercel dashboard (it stays quiet on your own computer).
+injectAnalytics();
 import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
 import books from './books.json';
 import { buildDecor } from './decor.js';

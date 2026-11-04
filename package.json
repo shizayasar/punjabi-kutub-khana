@@ -13,6 +13,7 @@
     "sync": "node scripts/sync-books.mjs"
   },
   "dependencies": {
+    "@vercel/analytics": "^1.6.1",
     "three": "0.170.0"
   },
   "devDependencies": {
