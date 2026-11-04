@@ -46,8 +46,35 @@ html, body {
   border-radius: 14px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
   border: 3px solid var(--gold);
-  outline: 6px solid var(--accent);
-  outline-offset: -12px;
+  position: relative;
+}
+/* The red inner frame. It is drawn on top of the card and never scrolls, so text
+   can't slide underneath it or show between it and the gold edge. */
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 6px solid var(--accent);
+  border-radius: 9px;
+  pointer-events: none;
+  z-index: 3;
+}
+.reader-card::after { display: none; }
+
+/* Panels with a lot of content (the shelves list, About): the frame and header stay
+   still and only the inner .panel-scroll area scrolls, inside the red frame. */
+.list-card, .about-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 12px;
+}
+.panel-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .welcome-card {
@@ -104,23 +131,19 @@ button:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 2px; 
      so the end of the panel got stuck under it. 100dvh is the visible height. */
   max-height: calc(100vh - 32px);
   max-height: calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: 16px;
 }
 .about-title { display: flex; align-items: center; gap: 14px; }
 .about-logo { width: 64px; height: auto; flex: none; }
 .about-card h2.shahmukhi { font-size: 1.8rem; color: var(--accent); margin: 0; text-align: left; }
 .about-card .subtitle { margin: 0; font-size: 1rem; color: var(--muted); }
-.about-body { padding: 4px 28px 8px; line-height: 1.6; }
+.about-body { padding: 4px 28px 16px; line-height: 1.6; }
 .about-body h3 { color: var(--accent-2); margin: 20px 0 6px; }
 .about-body p { margin: 0 0 8px; }
 .about-body ul { margin: 0 0 8px; padding-left: 20px; }
 .about-body a { color: var(--accent-2); }
 .about-body .lead { font-size: 1.08rem; }
 .about-body .lead .shahmukhi { display: block; font-size: 1.5rem; color: var(--accent); text-align: right; line-height: 2; }
-@media (max-width: 600px) { .about-body { padding: 4px 16px 8px; } }
+@media (max-width: 600px) { .about-body { padding: 4px 16px 16px; } }
 
 /* ---------- list view ---------- */
 .list-card {
@@ -129,12 +152,8 @@ button:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 2px; 
      so the end of the panel got stuck under it. 100dvh is the visible height. */
   max-height: calc(100vh - 32px);
   max-height: calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: 20px;
 }
-.search-wrap { margin: 0 14px; padding: 4px 6px 0; position: sticky; top: 0; background: var(--paper); z-index: 1; }
+.search-wrap { margin: 0 14px; padding: 4px 6px 0; }
 #search {
   width: 100%;
   font: inherit;
@@ -241,3 +260,9 @@ button:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 2px; 
   .room-block { padding: 6px 14px 4px; }
 }
 @media (max-height: 640px) { .welcome-logo { width: 80px; } }
+.list-card .panel-scroll { padding-bottom: 12px; }
+/* Keep two books per row on phones even with the frame's inner padding. */
+@media (max-width: 600px) {
+  .list-card { padding: 12px 10px; }
+  .book-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+}
