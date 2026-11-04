@@ -153,6 +153,44 @@ booksRows.slice(1).forEach((row) => {
   });
 });
 
+// ---------------------------------------------------------------------------
+// Page counts for the reader. Reused from the last books.json when we already know
+// them; otherwise looked up on Internet Archive (needs an internet connection).
+// ---------------------------------------------------------------------------
+const knownPages = new Map();
+try {
+  for (const old of JSON.parse(await readFile(outPath, 'utf8'))) {
+    if (old.pages) knownPages.set(old.archiveId, old.pages);
+  }
+} catch { /* first run */ }
+
+async function lookUpPages(id) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 30000);
+  try {
+    const r = await fetch(`https://iiif.archive.org/iiif/3/${encodeURIComponent(id)}/manifest.json`, { signal: ctrl.signal });
+    if (!r.ok) return 0;
+    const j = await r.json();
+    return (j.items || []).length;
+  } catch {
+    return 0;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+const missing = books.filter((bk) => !knownPages.has(bk.archiveId));
+if (missing.length) console.log(`${c.dim}Looking up page counts for ${missing.length} new book(s) on Internet Archive…${c.off}`);
+await Promise.all(missing.map(async (bk) => {
+  const n = await lookUpPages(bk.archiveId);
+  if (n) knownPages.set(bk.archiveId, n);
+  else warnings.push(`${bk.id}: couldn't get its page count from Internet Archive. The reader will look it up when the book is opened (slower). Run npm run sync again later.`);
+}));
+for (const bk of books) {
+  const n = knownPages.get(bk.archiveId);
+  if (n) bk.pages = n;
+}
+
 if (!books.length) {
   console.error(`${c.red}No rows are ready for the website, so books.json was left unchanged.${c.off}`);
   for (const s of skipped) console.error(`  ${s.label}: ${s.reasons.join('; ')}`);

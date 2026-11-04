@@ -169,7 +169,12 @@
           <button class="close" data-close="reader" aria-label="Close">×</button>
         </header>
         <div class="reader-body">
-          <iframe id="reader-frame" title="Book reader" allow="fullscreen" allowfullscreen></iframe>
+          <!-- Right-to-left reader: left arrow = next page, right arrow = previous -->
+          <div id="book-stage" class="book-stage" dir="ltr">
+            <button id="pg-next" class="pg-btn" aria-label="Next page" title="Next page">‹</button>
+            <div id="spread" class="spread" aria-live="polite"></div>
+            <button id="pg-prev" class="pg-btn" aria-label="Previous page" title="Previous page">›</button>
+          </div>
           <div id="reader-loading" aria-live="polite">
             <svg class="loader-star" viewBox="0 0 100 100" aria-hidden="true">
               <polygon points="50,4 61,39 96,50 61,61 50,96 39,61 4,50 39,39" />
@@ -177,6 +182,16 @@
             </svg>
             <p class="shahmukhi" lang="pnb" dir="rtl">کتاب کھل دی پئی اے</p>
             <p class="en">Opening the book…</p>
+          </div>
+        </div>
+        <div class="reader-controls">
+          <span id="pg-count" class="pg-count"></span>
+          <label for="pg-slider" class="visually-hidden">Go to page</label>
+          <input id="pg-slider" type="range" min="0" max="0" value="0" dir="rtl" />
+          <div class="zoom-group" role="group" aria-label="Zoom">
+            <button id="zoom-out" aria-label="Zoom out" title="Zoom out (−)">−</button>
+            <button id="zoom-level" class="zoom-level" title="Fit the whole page (0)">100%</button>
+            <button id="zoom-in" aria-label="Zoom in" title="Zoom in (+)">+</button>
           </div>
         </div>
         <footer id="reader-footer"></footer>

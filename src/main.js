@@ -4,6 +4,7 @@
 
 import * as THREE from 'three';
 import { mat } from './materials.js';
+import { createReader } from './reader.js';
 import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
 import books from './books.json';
 import { buildDecor } from './decor.js';
@@ -412,11 +413,12 @@ function openBook(book) {
   $('reader-title-sm').textContent = book.titleShahmukhi;
   $('reader-meta').textContent = `${book.titleEnglish} · ${book.author}${book.year && book.year !== 'n.d.' ? ` · ${book.year}` : ''}`;
   showLoading();
-  $('reader-frame').src = `https://archive.org/embed/${encodeURIComponent(book.archiveId)}`;
   const link = `https://archive.org/details/${encodeURIComponent(book.archiveId)}`;
   $('reader-footer').innerHTML =
-    `${book.credit ? `${escapeHtml(book.credit)}. ` : ''}Hosted on <a href="${link}" target="_blank" rel="noopener">Internet Archive</a>.`;
+    `${book.credit ? `${escapeHtml(book.credit)}. ` : ''}Scans hosted on Internet Archive · ` +
+    `<a href="${link}" target="_blank" rel="noopener">open there</a> to search or download.`;
   reader.hidden = false;
+  bookReader.open(book);
 }
 
 // Loading animation: shown when a book opens, hidden once the reader has loaded.
@@ -432,17 +434,14 @@ function hideLoading() {
   clearTimeout(loadingTimer);
   loading.classList.add('done');
 }
-$('reader-frame').addEventListener('load', () => {
-  // Ignore the blank page loaded when a book is closed.
-  if (!readerOpen || !$('reader-frame').src.startsWith('https://archive.org/')) return;
-  // Give Internet Archive's reader a moment to draw its first page.
-  setTimeout(hideLoading, 600);
-});
+// Our own right-to-left reader (src/reader.js). It hides the loading animation
+// as soon as the first page image has arrived.
+const bookReader = createReader({ onFirstPage: hideLoading, isOpen: () => readerOpen });
 
 function closeReader({ fromClick = false } = {}) {
   readerOpen = false;
   reader.hidden = true;
-  $('reader-frame').src = 'about:blank';
+  bookReader.close();
   if (returnTo === 'list') {
     listView.hidden = false;
   } else if (fromClick && !isTouch) {

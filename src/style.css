@@ -208,7 +208,76 @@ button:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 2px; 
 #reader-title-sm { font-size: 1.6rem; margin: 0; }
 #reader-meta { margin: 0; color: var(--muted); }
 .reader-body { position: relative; flex: 1; display: flex; }
-#reader-frame { flex: 1; width: 100%; border: 0; background: #222; }
+.reader-body { min-height: 0; }
+
+/* ---- Right-to-left page reader ---- */
+.book-stage {
+  flex: 1; min-width: 0; min-height: 0;
+  display: flex; align-items: stretch;
+  background: radial-gradient(ellipse at center, #3b2416 0%, #22150d 100%);
+  user-select: none; -webkit-user-select: none;
+}
+.spread {
+  flex: 1; min-width: 0; min-height: 0;
+  display: flex; justify-content: center; align-items: center;
+  padding: 12px 4px; overflow: hidden; cursor: pointer;
+  touch-action: pan-y pinch-zoom;
+}
+.spread .page {
+  max-width: 100%; max-height: 100%;
+  object-fit: contain; display: block;
+  background: #f6ecd9;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+  transition: opacity 0.25s ease;
+}
+.spread.two .page { max-width: 50%; }
+/* A soft shadow along the spine between the two pages */
+.spread.two .page:first-child { box-shadow: inset -18px 0 24px -16px rgba(0,0,0,.35), 0 6px 24px rgba(0,0,0,.45); }
+.spread.two .page:last-child  { box-shadow: inset 18px 0 24px -16px rgba(0,0,0,.35), 0 6px 24px rgba(0,0,0,.45); }
+.spread .page.loading { opacity: 0.25; min-width: 30%; min-height: 60%; }
+.spread .page.failed { opacity: 0.6; min-width: 30%; min-height: 60%; }
+.spread.turn-next .page { animation: turn-next 0.28s ease-out; }
+.spread.turn-prev .page { animation: turn-prev 0.28s ease-out; }
+@keyframes turn-next { from { transform: translateX(-24px); opacity: 0.4; } }
+@keyframes turn-prev { from { transform: translateX(24px); opacity: 0.4; } }
+.reader-error { color: var(--paper); text-align: center; padding: 24px; }
+
+/* Page-turn buttons: always on screen beside the page (they sit outside the
+   scrolling area, so they stay put while zoomed). Left = next, right = previous. */
+.pg-btn {
+  flex: none; align-self: center;
+  width: 46px; height: 46px; margin: 0 10px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  background: var(--paper); color: var(--accent);
+  font-size: 2rem; line-height: 1; padding: 0 0 4px;
+  display: grid; place-items: center;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+}
+.pg-btn:hover:not(:disabled) { background: #fffaf0; filter: none; transform: scale(1.06); }
+.pg-btn:active:not(:disabled) { transform: scale(0.95); }
+.pg-btn:disabled { opacity: 0.35; cursor: default; box-shadow: none; }
+
+/* Zoom: one page, wider than the screen, scroll to read */
+.book-stage.zoomed .spread { overflow: auto; align-items: flex-start; justify-content: flex-start; cursor: default; touch-action: auto; }
+.book-stage.zoomed .page { max-width: none; max-height: none; flex: none; margin: auto; }
+
+.reader-controls {
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px 20px 0;
+}
+#pg-slider { flex: 1; accent-color: var(--accent); min-width: 0; }
+.pg-count { font-size: 0.9rem; color: var(--muted); min-width: 5.5em; text-align: center; font-variant-numeric: tabular-nums; }
+.zoom-group { display: flex; align-items: center; border: 2px solid var(--paper-2); border-radius: 999px; overflow: hidden; flex: none; }
+.zoom-group button { border: none; border-radius: 0; background: transparent; padding: 4px 12px; font-size: 1.15rem; line-height: 1.2; }
+.zoom-group button:disabled { opacity: 0.3; cursor: default; }
+.zoom-group .zoom-level { font-size: 0.85rem; min-width: 4.2em; padding: 4px 4px; font-variant-numeric: tabular-nums; border-left: 1px solid var(--paper-2); border-right: 1px solid var(--paper-2); }
+@media (max-width: 600px) {
+  .pg-btn { width: 36px; height: 36px; margin: 0 4px; font-size: 1.6rem; }
+  .spread { padding: 8px 0; }
+  .reader-controls { padding: 6px 12px 0; gap: 8px; }
+}
 
 /* Loading animation shown until the book appears */
 #reader-loading {
