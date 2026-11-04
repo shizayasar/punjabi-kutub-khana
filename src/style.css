@@ -179,10 +179,12 @@ button:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 2px; 
 .room-block h3 .shahmukhi { font-weight: 400; margin-left: 12px; }
 .book-grid {
   display: grid;
+  direction: rtl;            /* first book on the right, matching the shelves */
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 12px;
 }
 .book-tile {
+  direction: ltr;
   text-align: right;
   border-radius: 8px;
   border: 2px solid var(--paper-2);

@@ -313,7 +313,8 @@ function buildShelf(roomName, roomBooks, position, rotationY) {
     unit.userData.books.push(mesh);
     // Centre the books on each shelf, however many there are.
     const onThisShelf = Math.min(perShelf, roomBooks.length - Math.floor(i / perShelf) * perShelf);
-    const x = (slot - (onThisShelf - 1) / 2) * (bookW + 0.28);
+    // Right to left, the way Shahmukhi reads: the first book sits on the right.
+    const x = ((onThisShelf - 1) / 2 - slot) * (bookW + 0.28);
     const y = shelfHeights[shelfIndex] + 0.03 + bookH / 2;
     mesh.position.set(x, y, 0);
     mesh.rotation.x = -0.08; // lean back slightly against the shelf
@@ -328,6 +329,17 @@ function buildShelf(roomName, roomBooks, position, rotationY) {
   shelfUnits.push(unit);
 }
 
+// Shelf order, like a real Punjabi library: books grouped by poet (poets in Shahmukhi
+// alphabetical order, unknown authors last), and each poet's books oldest first.
+const yearOf = (b) => { const y = parseInt(b.year, 10); return Number.isNaN(y) ? Infinity : y; };
+const isUnknown = (b) => !b.authorShahmukhi || b.author === 'Unknown';
+function shelfOrder(a, b) {
+  if (isUnknown(a) !== isUnknown(b)) return isUnknown(a) ? 1 : -1;
+  const byPoet = (a.authorShahmukhi || a.author).localeCompare(b.authorShahmukhi || b.author, 'ur');
+  if (byPoet) return byPoet;
+  return yearOf(a) - yearOf(b) || a.id.localeCompare(b.id);
+}
+
 function buildShelves() {
   // Group books by room, in the order rooms first appear.
   const rooms = new Map();
@@ -335,6 +347,7 @@ function buildShelves() {
     if (!rooms.has(book.room)) rooms.set(book.room, []);
     rooms.get(book.room).push(book);
   }
+  for (const roomBooks of rooms.values()) roomBooks.sort(shelfOrder);
 
   // Shelf spots around the walls. More rooms → more spots used.
   // 7 spots: three on the back wall, one on each side wall, two on the front wall
